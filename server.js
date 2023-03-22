@@ -8,7 +8,7 @@ const csvHeader = 'name,password\n';
 const csvFilePath = 'login.csv';
 
 app.use(cors({
-    origin:'http://localhost:4200', 
+    origin:'http://192.168.200.197:4200', 
     optionSuccessStatus:200,
  }
  ));
