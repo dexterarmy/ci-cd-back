@@ -4,6 +4,13 @@ const cors = require('cors');
 const csv = require('fast-csv');
 
 const app = express();
+const server = require('http').createServer(app);
+const io = require('socket.io')(server, {
+    cors: {
+        origins: ['http://localhost:4200']
+    }
+});
+
 const csvHeader = 'name,password\n';
 const csvFilePath = 'login.csv';
 
@@ -95,8 +102,24 @@ app.get('/stock', (req,res)=>{
 
 });
 
-
-const server = app.listen(3000, () => {
-    console.log(`app is running at port 3000`);
-  });
+setInterval(() => {
+    const data = Math.random();
+    io.emit('changingData', data);
+  }, 1000);
   
+
+  io.on('connection', (socket) => {
+    console.log('Client connected');
+    socket.on('disconnect', () => {
+      console.log('Client disconnected');
+    });
+  });
+
+// const server = app.listen(3000, () => {
+//     console.log(`app is running at port 3000`);
+//   });
+  
+server.listen(3000, () => {
+    console.log(`app is running at port 3000`);
+
+});
