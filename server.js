@@ -13,6 +13,8 @@ const io = require('socket.io')(server, {
 
 const csvHeader = 'name,password\n';
 const csvFilePath = 'login.csv';
+let valuee = true;
+// let stockData = [];
 
 
 app.use(cors({
@@ -82,11 +84,55 @@ app.get('/stock', (req,res)=>{
         return;
     }
 
-    const stockData = [];
+    let stockData = [];
     fs.createReadStream('stockData.csv')
     .pipe(csv.parse({ headers: true }))
-    .on('data', row => stockData.push(row))
+    .on('data', row => {
+     
+      
+    stockData.push(row); 
+   
+
+    })
      .on('end', () => {
+      setInterval(() => {
+        // const data = Math.random();
+
+        if(valuee){
+
+          let myVal = stockData.map(val => {
+          
+          
+            return  val.entryPrice * 1.02;
+           
+              
+             
+          });
+          io.emit('changingData', myVal);
+          valuee = false;
+
+        } else {
+          let myVal = stockData.map(val => {
+          
+          
+            return  (val.entryPrice - (val.entryPrice * 0.02) );
+           
+              
+             
+          });
+          io.emit('changingData', myVal);
+          valuee = true;
+
+        }
+        
+        
+        
+        
+      }, 1000);
+    
+    
+
+          
           //  console.log(names);
        // Do something with the names
        res.status(200).json({status : 'success', data: stockData});
@@ -96,16 +142,19 @@ app.get('/stock', (req,res)=>{
     })
 
     
-    // res.status(200).json({status: 'success'});
+   
     
 
 
 });
 
-setInterval(() => {
-    const data = Math.random();
-    io.emit('changingData', data);
-  }, 1000);
+// setInterval(() => {
+//     const data = Math.random();
+    
+//     io.emit('changingData', data);
+//   }, 1000);
+
+
   
 
   io.on('connection', (socket) => {

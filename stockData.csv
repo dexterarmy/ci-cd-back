@@ -1,4 +1,5 @@
 stock,entryType,entryPrice,stopLoss,targetPoint,quantity,tag,autoSquare
-nifty,CA,12,34,435,12,CA,12
-nifty,CA,we,12,435,12,US,11
-nifty,US,12,34,12,1,CA,12
+nifty,CA,5000,34,435,12,CA,12
+nifty,CA,4000,12,435,12,US,11
+nifty,US,3000,34,12,1,CA,12
+nifty,CA,2000,34,12,12,US,11
